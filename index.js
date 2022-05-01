@@ -9,6 +9,7 @@ const ballDiameter = 20
 let xDirection = 2
 let yDirection = 2
 
+let score = 0
 let timerId
 
 const userStart = [230, 10]
@@ -52,10 +53,8 @@ const blocks =
 //draw my block function
 function addBlocks()
 {
-    console.log('block ')
     for(let i = 0; i < blocks.length; i++)
     {
-        console.log('block created')
         const block = document.createElement('div')
         block.classList.add('block')
         block.style.left = blocks[i].bottomLeft[0] + 'px'
@@ -131,8 +130,37 @@ timerId = setInterval(moveBall, 30)
 //check for collisions
 function checkForCollisions()
 {
-    //check for wall collisiions
+    //check for block collisions
+    for(let i = 0; i < blocks.length; i++)
+    {
+        if
+        (
+            (ballCurrentPosition[0] > blocks[i].bottomLeft[0] && ballCurrentPosition[0] <  blocks[i].bottomRight[0]) &&
+            ((ballCurrentPosition[1] + ballDiameter) > blocks[i].bottomLeft[1] && ballCurrentPosition[1] < blocks[i].topLeft[1])
+        )
+        {
+            const allBlocks = Array.from(document.querySelectorAll('.block'))
+            allBlocks[i].classList.remove('block')
+            blocks.splice(i, 1)
+            changeDirection()
+            score++
+            scoreDisplay.innerHTML = score
+
+        }
+    }
+
+    //check for wall collisions
     if(ballCurrentPosition[0] >= (boardWidth - ballDiameter) || ballCurrentPosition[1] >= (boardHeight - ballDiameter) || ballCurrentPosition[0] <= 0) 
+    {
+        changeDirection()
+    }
+
+    //check for user collisions
+    if
+    (
+        (ballCurrentPosition[0] > currentPosition[0] && ballCurrentPosition[0] < currentPosition[0] + blockWidth) &&
+        (ballCurrentPosition[1] > currentPosition[1] && ballCurrentPosition[1] < currentPosition[1] + blockHeight)
+    )
     {
         changeDirection()
     }
