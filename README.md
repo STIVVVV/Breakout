@@ -1,2 +1,2 @@
 # Breakout
-Brick breaker made with javascript
+Brick breaker made with JavaScript.
